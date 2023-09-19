@@ -3,10 +3,12 @@ const getToken = require("../helpers/getToken")
 const User  =  require("../models/User")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const getUserByToken = require("../helpers/get-user-by-token")
 module.exports = class UserControle{
     static async userRegister(req,res){
-        const {name,email,password,image,phone,confirmpassword} = req.body
+        const {name,email,password,phone,image,confirmpassword} = req.body
         
+
         if(!name){
             res.status(422).json({message : "não pode deixar o campo name undefined"})
             return
@@ -53,7 +55,6 @@ module.exports = class UserControle{
             return
         }
 
-        
         }
     }
 
@@ -104,5 +105,100 @@ module.exports = class UserControle{
         res.status(200).send(currentUser)
     }
     
-}
+    static async getUserById(req,res){
+        const id = req.params.id
 
+        try {
+            const user = await User.findById(id).select("-password")
+            res.status(200).json({user})
+        }
+        catch(err) {
+            
+            res.status(422).json({
+                message : "usuario não encontrado!"
+            })
+            return
+            
+        }
+        
+        
+    }
+
+    static async editUser(req,res){
+        
+        const user = await  getUserByToken(getToken(req))
+        console.log(user)    
+          
+        if(!user){
+            res.status(422).json({
+                message : "usuario não encontrado!"
+            })
+        }
+        const {name,email,password,phone,confirmpassword} = req.body
+        
+        
+        
+        
+        if(!name){
+            res.status(422).json({message : "não pode deixar o campo name undefined"})
+            return
+        }
+        if(!email){
+            res.status(422).json({message : "não pode deixar o campo email undefined"})
+            return
+        }
+        if(!password){
+            res.status(422).json({message : "não pode deixar o campo password undefined"})
+            return
+        }
+        if(!confirmpassword){
+            res.status(422).json({message : "não pode deixar o campo confirmpassword undefined"})
+            return
+        }
+        if(!phone){
+            res.status(422).json({message : "não pode deixar o campo telefone undefined"})
+            return
+        }
+        
+        const userExists = await User.findOne({email : email})
+
+        console.log(user.email, email)
+        if(userExists && user.email != email){
+            res.status(422).json({message : "por favor utilize outro email"})
+            return
+        }
+        let image = ""
+        if(req.file){
+            image = req.file.filename
+        } 
+        console.log(image)
+        user.image = image
+        user.email = email
+        user.phone = phone
+        if (password != confirmpassword){
+            res.status(422).json({message : "As senhas não coincidem"})
+            return
+        } 
+        else if(password === confirmpassword && password != null){
+            const hashedpassword = bcrypt.hashSync(password,bcrypt.genSaltSync(10))
+            user.password = hashedpassword
+            console.log(user)
+            
+        }
+        
+        try {
+           await User.findByIdAndUpdate({_id : user._id},{$set:user},{new:true})
+           res.status(500).json({
+            message: 'Usuário atualizado com sucesso!',
+            
+          })
+           
+        } catch (error) {
+            res.status(500).json({message : error})
+            return
+        }
+
+    }
+
+
+}

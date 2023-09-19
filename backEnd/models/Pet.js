@@ -7,12 +7,12 @@ const Pet = mongoose.model("Pet", new Schema({
     color : {type : String, required :true},
     age : {type:Number, required :true},
     weight :{type:Number,required :true},
-    avalable :{type:Boolean,required :true,
+    available :{type:Boolean,required :true},
     user : Object,
     adopter: Object
 }
 
-}, {timestamps: true}
+, {timestamps: true}
 ))
 
-export default Pet
+module.exports= Pet;
