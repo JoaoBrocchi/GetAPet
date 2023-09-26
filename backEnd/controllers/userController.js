@@ -94,7 +94,7 @@ module.exports = class UserControle{
         if(req.headers.authorization){
 
             const token = getToken(req)
-            const decoded = jwt.verify(token,process.ev.SECRET)
+            const decoded = jwt.verify(token,process.env.SECRET)
             currentUser = await User.findById(decoded.id)
 
             currentUser.password = undefined

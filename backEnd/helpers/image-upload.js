@@ -13,7 +13,7 @@ const imageStorege = multer.diskStorage({
         cb(null,`public/images/${folder}`)
     },
     filename: (req,file,cb)=>{
-        cb(null,Date.now()+ String(math.random()*1000)+ path.extname(file.originalname))
+        cb(null,Date.now()+ String(Math.random()*1000)+ path.extname(file.originalname))
         
     }
 })

@@ -1,4 +1,4 @@
-const express = require("express")
+express = require("express")
 const UserController = require("../controllers/userController.js")
 const verifyToken = require("../helpers/verifyToken.js")
 const imageUpload = require("../helpers/image-upload.js")
