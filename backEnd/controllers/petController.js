@@ -93,7 +93,7 @@ module.exports = class petController{
         }
         try {
             const pet = await  Pet.findById(id)
-            res.status(422).json({
+            res.status(200).json({
                 pet: pet
             })
         } catch (error) {

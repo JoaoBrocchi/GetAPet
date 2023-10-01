@@ -20,7 +20,9 @@ function PetForm(petData, btnText, handleSubmit){
     }
     function submit(e){
         e.preventDefault()
+        handleSubmit(pet)
     }
+    
     return (
      <form onSubmit={submit} className={formStyles.form_container}>
         <div className={formStyles.preview_pet_images}>

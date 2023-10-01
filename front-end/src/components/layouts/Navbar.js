@@ -5,6 +5,7 @@ import {Context} from "../../context/UserContext"
 import { useContext } from "react";
 import useAuth from "../../hooks/useAuth"
 
+
 function Navbar(){
     const { authenticathed, logout } = useContext(Context)
     return(
@@ -18,10 +19,10 @@ function Navbar(){
 
                 {authenticathed ? (
                     <>
-                        <li><Link to="/pet/mypets">My pets</Link></li>
+                        <li><Link to="/pet/mypets">Meus pets</Link></li>
                         <li><Link to="/user/profile">Perfil</Link></li>
+                        <li><Link to="/pet/myadoptions">Minhas adoções</Link></li>
                         <li onClick={logout}>Sair</li>
-                        
 
                     </>
                 ) 

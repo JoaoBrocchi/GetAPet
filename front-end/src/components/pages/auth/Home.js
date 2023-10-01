@@ -9,7 +9,7 @@ function Home() {
   const [pets, setPets] = useState([])
 
   useEffect(() => {
-    api.get('/pets').then((response) => {
+    api.get('/pet').then((response) => {
       setPets(response.data.pets)
     })
   }, [])
